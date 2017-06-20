@@ -5,20 +5,15 @@ import {
 } from 'react-router-dom';
 
 import Login from './Login';
+import Main from './Main';
 
 import './App.css';
-
-const About = () => (
-  <div>
-    <h2>About</h2>
-  </div>
-);
 
 const App = () => (
   <Router>
     <div>
       <Route exact path="/" component={Login} />
-      <Route path="/about" component={About} />
+      <Route path="/about" component={Main} />
     </div>
   </Router>
 );
