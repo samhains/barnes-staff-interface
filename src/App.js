@@ -39,7 +39,7 @@ class App extends Component {
     this.state = { open: false };
   }
 
-  handleToggle() { this.setState({ open: !this.state.open }); }
+  handleToggle = () => { this.setState({ open: !this.state.open }); }
 
   render() {
     return (
