@@ -57,8 +57,8 @@ class App extends Component {
               {
                 menuItems.map(
                   item => (
-                    <Link style={linkStyle} to={item.url}>
-                      <MenuItem key={item.name}>{item.name}</MenuItem>
+                    <Link key={item.name} style={linkStyle} to={item.url}>
+                      <MenuItem>{item.name}</MenuItem>
                     </Link>),
                   )
               }
