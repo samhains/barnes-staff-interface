@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   Table,
   TableBody,
@@ -30,43 +30,51 @@ const tagData = [
   { name: 'Cat', confidence: 0.984 },
   { name: 'Mouse', confidence: 0.984 },
   { name: 'Badger', confidence: 0.984 },
-]
+];
 
-const Main = () => (
-  <Wrapper>
-    <Header> The Crying Woman by Pablo Picasso </Header>
-    <SubHeader> Information about this painting might sit here</SubHeader>
-    <div style={containerStyle}>
-      <div style={innerContainerStyle}>
-        <SearchInput />
-        <div>
-          <img src="./cezanne.jpg" alt="" />
+class InformationView extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { serviceName: 'Microsoft Azure' };
+  }
+  render() {
+    return (
+      <Wrapper>
+        <Header> The Crying Woman by Pablo Picasso </Header>
+        <SubHeader> Information about this painting might sit here</SubHeader>
+        <div style={containerStyle}>
+          <div style={innerContainerStyle}>
+            <SearchInput />
+            <div>
+              <img src="./cezanne.jpg" alt="" />
+            </div>
+          </div>
+          <div>
+            <HeaderSmall>
+              { this.state.serviceName }
+            </HeaderSmall>
+            <ServiceSelect onClick={val => this.setState({ serviceName: val })} />
+            <Table>
+              <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+                <TableRow>
+                  <TableHeaderColumn>Name</TableHeaderColumn>
+                  <TableHeaderColumn>Confidence</TableHeaderColumn>
+                </TableRow>
+              </TableHeader>
+              <TableBody displayRowCheckbox={false}>
+                { tagData.map(tag => (
+                  <TableRow key={tag.name}>
+                    <TableRowColumn>{tag.name}</TableRowColumn>
+                    <TableRowColumn>{tag.confidence}</TableRowColumn>
+                  </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </div>
         </div>
-      </div>
-      <div>
-        <HeaderSmall>
-          Microsoft Azure
-        </HeaderSmall>
-        <ServiceSelect />
-        <Table>
-          <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
-            <TableRow>
-              <TableHeaderColumn>Name</TableHeaderColumn>
-              <TableHeaderColumn>Confidence</TableHeaderColumn>
-            </TableRow>
-          </TableHeader>
-        <TableBody displayRowCheckbox={false}>
-            {tagData.map((tag) => (
-              <TableRow>
-                <TableRowColumn>{tag.name}</TableRowColumn>
-                <TableRowColumn>{tag.confidence}</TableRowColumn>
-              </TableRow>
-            ))}
-        </TableBody>
-        </Table>
-      </div>
-    </div>
-  </Wrapper>
-);
+      </Wrapper>
+    );
+  }
+}
 
-export default Main;
+export default InformationView;

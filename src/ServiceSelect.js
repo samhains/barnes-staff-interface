@@ -1,18 +1,33 @@
 import React from 'react';
+import PropTypes from 'prop-types'; // ES6
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
 
-const SearchInput = () => (
+const menuItems = [
+  { name: 'IBM Watson' },
+  { name: 'Tensorflow' },
+  { name: 'AWS Rekognition' },
+  { name: 'Google' },
+  { name: 'Clarifai' },
+];
+
+const ServiceSelect = ({ onClick }) => (
   <SelectField
+    onChange={(eevent, index, value) => onClick(value)}
     floatingLabelText="Service"
   >
-    <MenuItem value={1} primaryText="IBM Watson" />
-    <MenuItem value={2} primaryText="Tensorflow" />
-    <MenuItem value={3} primaryText="AWS Rekognition" />
-    <MenuItem value={4} primaryText="Google" />
-    <MenuItem value={5} primaryText="Microsoft Azure" />
-    <MenuItem value={6} primaryText="Clarifai" />
+    {menuItems.map(menuItem => (
+      <MenuItem
+        key={menuItem.name}
+        value={menuItem.name}
+        primaryText={menuItem.name}
+      />
+    ))}
   </SelectField>
 );
 
-export default SearchInput;
+ServiceSelect.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};
+
+export default ServiceSelect;
