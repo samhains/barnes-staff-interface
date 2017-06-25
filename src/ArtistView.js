@@ -1,54 +1,76 @@
-import React from 'react';
-import SelectField from 'material-ui/SelectField';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
-import MenuItem from 'material-ui/MenuItem';
-import { Link } from 'react-router-dom';
-
-const buttonStyle = {
-  marginTop: '20px',
-  marginLeft: '10px',
-};
-
-const outerContainerStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  flexGrow: '0'
-};
+import React, { Component } from 'react';
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn,
+} from 'material-ui/Table';
+import Wrapper from './Wrapper';
+import Header from './Header';
+import HeaderSmall from './HeaderSmall';
+import SubHeader from './SubHeader';
+import SearchInput from './SearchInput';
+import ServiceSelect from './ServiceSelect';
 
 const containerStyle = {
   display: 'flex',
   flexDirection: 'row',
 };
 
-const Main = () => (
-  <div style={outerContainerStyle}>
-    <div style={containerStyle}>
-      <SelectField
-        floatingLabelText="Service"
-      >
-        <MenuItem value={1} primaryText="IBM Watson" />
-        <MenuItem value={2} primaryText="Tensorflow" />
-        <MenuItem value={3} primaryText="AWS Rekognition" />
-        <MenuItem value={4} primaryText="Google" />
-        <MenuItem value={5} primaryText="Microsoft Azure" />
-        <MenuItem value={6} primaryText="Clarifai" />
-      </SelectField>
-      <TextField
-        floatingLabelText="Search here..."
-      />
-      <Link to="/about">
-        <RaisedButton
-          style={buttonStyle}
-          label="Submit"
-          primary
-        />
-      </Link>
-    </div>
-    <div>
-      <img src="./cezanne.jpg" alt="" />
-    </div>
-  </div>
-);
 
-export default Main;
+const tagData = [
+  { name: 'Dog', confidence: 0.984 },
+  { name: 'Cat', confidence: 0.984 },
+  { name: 'Mouse', confidence: 0.984 },
+  { name: 'Badger', confidence: 0.984 },
+];
+
+class InformationView extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { serviceName: 'Microsoft Azure' };
+  }
+  render() {
+    return (
+      <Wrapper>
+        <SearchInput />
+        <div style={containerStyle}>
+          <div>
+            <Header> Pablo Picasso </Header>
+            <SubHeader> Information about this painting might sit here</SubHeader>
+          </div>
+          <div>
+            <HeaderSmall>
+              { this.state.serviceName }
+            </HeaderSmall>
+            <ServiceSelect onClick={val => this.setState({ serviceName: val })} />
+          </div>
+        </div>
+        <div style={containerStyle}>
+          <div>
+            <Table>
+              <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+                <TableRow>
+                  <TableHeaderColumn>Name</TableHeaderColumn>
+                  <TableHeaderColumn>Confidence</TableHeaderColumn>
+                </TableRow>
+              </TableHeader>
+              <TableBody displayRowCheckbox={false}>
+                { tagData.map(tag => (
+                  <TableRow key={tag.name}>
+                    <TableRowColumn>{tag.name}</TableRowColumn>
+                    <TableRowColumn>{tag.confidence}</TableRowColumn>
+                  </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </div>
+        </div>
+      </Wrapper>
+    );
+  }
+}
+
+export default InformationView;

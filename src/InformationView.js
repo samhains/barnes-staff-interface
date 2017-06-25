@@ -40,11 +40,11 @@ class InformationView extends Component {
   render() {
     return (
       <Wrapper>
+        <SearchInput />
         <Header> The Crying Woman by Pablo Picasso </Header>
         <SubHeader> Information about this painting might sit here</SubHeader>
         <div style={containerStyle}>
           <div style={innerContainerStyle}>
-            <SearchInput />
             <div>
               <img src="./cezanne.jpg" alt="" />
             </div>
