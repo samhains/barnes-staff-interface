@@ -13,6 +13,7 @@ import HeaderSmall from './HeaderSmall';
 import SubHeader from './SubHeader';
 import SearchInput from './SearchInput';
 import ServiceSelect from './ServiceSelect';
+import Loader from './Loader';
 
 const containerStyle = {
   display: 'flex',
@@ -36,8 +37,20 @@ class InformationView extends Component {
   constructor(props) {
     super(props);
     this.state = { serviceName: 'Microsoft Azure' };
+    this.loading = true;
   }
+
   render() {
+    if (true) {
+      
+      return (
+        <Wrapper>
+          <Loader/>
+        </Wrapper>
+      )
+      
+    }
+
     return (
       <Wrapper>
         <SearchInput />
