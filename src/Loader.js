@@ -2,9 +2,7 @@ import React from 'react';
 
 const containerStyle = {
   fontSize: '28px',
-  display: 'flex',
-  alignItems: 'flex-end',
-  justifyContent: 'center',
+  textAlign: 'center',
   marginTop: '200px'
 };
 

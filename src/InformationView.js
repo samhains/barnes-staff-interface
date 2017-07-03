@@ -26,29 +26,39 @@ const innerContainerStyle = {
   flexGrow: '0',
 };
 
-const tagData = [
-  { name: 'Dog', confidence: 0.984 },
-  { name: 'Cat', confidence: 0.984 },
-  { name: 'Mouse', confidence: 0.984 },
-  { name: 'Badger', confidence: 0.984 },
-];
 
 class InformationView extends Component {
   constructor(props) {
     super(props);
-    this.state = { serviceName: 'Microsoft Azure' };
-    this.loading = true;
+    this.state =
+      { serviceName: 'Microsoft Azure',
+        loading: true,
+        tagData: [{ name: 'Dog', confidence: 0.984 },
+          { name: 'Cat', confidence: 0.984 },
+          { name: 'Mouse', confidence: 0.984 },
+          { name: 'Badger', confidence: 0.984 }]
+      }
+  }
+  componentDidMount() {
+
+    var myHeaders = new Headers();
+    var myInit = { method: 'GET',
+                 headers: myHeaders,
+                 mode: 'cors',
+                 cache: 'default' };
+    fetch('http://localhost:1337/artist')
+      .then(response => response.json())
+      .then(response => console.log(response))
+      .catch(err => console.error(err.message))
   }
 
   render() {
-    if (true) {
-      
+    if (this.state.loading) {
       return (
         <Wrapper>
           <Loader/>
         </Wrapper>
       )
-      
     }
 
     return (
@@ -75,7 +85,7 @@ class InformationView extends Component {
                 </TableRow>
               </TableHeader>
               <TableBody displayRowCheckbox={false}>
-                { tagData.map(tag => (
+                { this.state.tagData.map(tag => (
                   <TableRow key={tag.name}>
                     <TableRowColumn>{tag.name}</TableRowColumn>
                     <TableRowColumn>{tag.confidence}</TableRowColumn>
