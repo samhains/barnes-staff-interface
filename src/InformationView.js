@@ -20,6 +20,11 @@ const containerStyle = {
   flexDirection: 'row',
 };
 
+const imageStyle = {
+  maxWidth: '400px',
+
+}
+
 const innerContainerStyle = {
   display: 'flex',
   flexDirection: 'column',
@@ -42,7 +47,6 @@ class InformationView extends Component {
     fetch('http://localhost:1337/artwork/'+id)
       .then(response => response.json())
       .then(response => {
-        console.log(response)
         this.setState(
           { artwork: response,
             loading: false,
@@ -73,7 +77,7 @@ class InformationView extends Component {
             <div style={containerStyle}>
               <div style={innerContainerStyle}>
                 <div>
-                  <img src="./cezanne.jpg" alt="" />
+                  <img style={imageStyle} src={`http://localhost:1337/images/${this.state.artwork.url}`} alt="" />
                 </div>
               </div>
               <div>

@@ -65,7 +65,7 @@ class App extends Component {
             </Drawer>
           </AppBar>
           <Route exact path="/" component={Login} />
-          <Route path="/information" component={InformationView} />
+          <Route path="/information/:id" component={InformationView} />
           <Route path="/artist-tag" component={ArtistTagView} />
           <Route path="/artist" component={ArtistView} />
           <Route path="/tag" component={TagView} />
