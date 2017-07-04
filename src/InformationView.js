@@ -7,6 +7,8 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+
+import { Link } from 'react-router-dom';
 import Wrapper from './Wrapper';
 import Header from './Header';
 import HeaderSmall from './HeaderSmall';
@@ -44,8 +46,11 @@ class InformationView extends Component {
         artworks: [],
         loading: true,
         artwork: null,
-        tagData: null 
+        tagData: null,
       }
+  }
+  refreshPage(){ 
+      window.location.reload(); 
   }
   componentDidMount() {
     const id = this.props.match.params.id;
@@ -77,7 +82,7 @@ class InformationView extends Component {
 
   render() {
     console.log(this.state.artworks)
-    const filteredArtworks = this.state.artworks.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS));
+    const filteredArtworks = this.state.artworks.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS)).slice(0, 10);
 
     if (this.state.loading) {
       return (
@@ -91,12 +96,14 @@ class InformationView extends Component {
     return (
       <Wrapper>
         <div> Please search for the name of a Painting </div>
-        <SearchInput onChange={this.searchUpdated.bind(this)}/>
+        <SearchInput onChange={this.searchUpdated.bind(this)} fuzzy sortResults/>
 
         {filteredArtworks.map(artwork => {
             return (
               <div className="mail" key={artwork.id}>
-                <div className="from">{artwork.name}</div>
+                <Link to={`${artwork.id}`} onClick={ this.refreshPage }>
+                  <div className="from">{artwork.name}</div>
+                </Link>
               </div>
             )
           })}
