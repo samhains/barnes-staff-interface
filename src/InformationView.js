@@ -33,22 +33,22 @@ class InformationView extends Component {
     this.state =
       { serviceName: 'Microsoft Azure',
         loading: true,
-        tagData: [{ name: 'Dog', confidence: 0.984 },
-          { name: 'Cat', confidence: 0.984 },
-          { name: 'Mouse', confidence: 0.984 },
-          { name: 'Badger', confidence: 0.984 }]
+        artwork: null,
+        tagData: null 
       }
   }
   componentDidMount() {
-
-    var myHeaders = new Headers();
-    var myInit = { method: 'GET',
-                 headers: myHeaders,
-                 mode: 'cors',
-                 cache: 'default' };
-    fetch('http://localhost:1337/artist')
+    const id = this.props.match.params.id;
+    fetch('http://localhost:1337/artwork/'+id)
       .then(response => response.json())
-      .then(response => console.log(response))
+      .then(response => {
+        console.log(response)
+        this.setState(
+          { artwork: response,
+            loading: false,
+            tagData: response.tags
+          })
+      })
       .catch(err => console.error(err.message))
   }
 
@@ -56,45 +56,52 @@ class InformationView extends Component {
     if (this.state.loading) {
       return (
         <Wrapper>
-          <Loader/>
+          <Loader />
         </Wrapper>
       )
     }
 
+
     return (
       <Wrapper>
+        <div> Please search for the name of a Painting </div>
         <SearchInput />
-        <Header> The Crying Woman by Pablo Picasso </Header>
-        <SubHeader> Information about this painting might sit here</SubHeader>
-        <div style={containerStyle}>
-          <div style={innerContainerStyle}>
-            <div>
-              <img src="./cezanne.jpg" alt="" />
+        {this.state.artwork ?
+          <div>
+            <Header> {this.state.artwork.name} by {this.state.artwork.artist.name} </Header>
+            <SubHeader> {this.state.artwork.year}</SubHeader>
+            <div style={containerStyle}>
+              <div style={innerContainerStyle}>
+                <div>
+                  <img src="./cezanne.jpg" alt="" />
+                </div>
+              </div>
+              <div>
+                <HeaderSmall>
+                  { this.state.serviceName }
+                </HeaderSmall>
+                <ServiceSelect onClick={val => this.setState({ serviceName: val })} />
+                <Table>
+                  <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+                    <TableRow>
+                      <TableHeaderColumn>Name</TableHeaderColumn>
+                      <TableHeaderColumn>Confidence</TableHeaderColumn>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody displayRowCheckbox={false}>
+                    { this.state.tagData.map((tag, index) => (
+                      <TableRow key={`${tag.name}_${index}`}>
+                        <TableRowColumn>{tag.name}</TableRowColumn>
+                        <TableRowColumn>{tag.confidence}</TableRowColumn>
+                      </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </div>
             </div>
           </div>
-          <div>
-            <HeaderSmall>
-              { this.state.serviceName }
-            </HeaderSmall>
-            <ServiceSelect onClick={val => this.setState({ serviceName: val })} />
-            <Table>
-              <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
-                <TableRow>
-                  <TableHeaderColumn>Name</TableHeaderColumn>
-                  <TableHeaderColumn>Confidence</TableHeaderColumn>
-                </TableRow>
-              </TableHeader>
-              <TableBody displayRowCheckbox={false}>
-                { this.state.tagData.map(tag => (
-                  <TableRow key={tag.name}>
-                    <TableRowColumn>{tag.name}</TableRowColumn>
-                    <TableRowColumn>{tag.confidence}</TableRowColumn>
-                  </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </div>
-        </div>
+          : null
+        }
       </Wrapper>
     );
   }
