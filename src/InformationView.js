@@ -11,9 +11,12 @@ import Wrapper from './Wrapper';
 import Header from './Header';
 import HeaderSmall from './HeaderSmall';
 import SubHeader from './SubHeader';
-import SearchInput from './SearchInput';
+
+import SearchInput, {createFilter} from 'react-search-input'
+
 import ServiceSelect from './ServiceSelect';
 import Loader from './Loader';
+const KEYS_TO_FILTERS = ['name']
 
 const containerStyle = {
   display: 'flex',
@@ -37,6 +40,8 @@ class InformationView extends Component {
     super(props);
     this.state =
       { serviceName: 'Microsoft Azure',
+        searchTerm: '',
+        artworks: [],
         loading: true,
         artwork: null,
         tagData: null 
@@ -44,7 +49,7 @@ class InformationView extends Component {
   }
   componentDidMount() {
     const id = this.props.match.params.id;
-    fetch('http://localhost:1337/artwork/'+id)
+    fetch(`http://localhost:1337/artwork/${id}`)
       .then(response => response.json())
       .then(response => {
         this.setState(
@@ -56,7 +61,24 @@ class InformationView extends Component {
       .catch(err => console.error(err.message))
   }
 
+  searchUpdated (term) {
+    console.log('updating', term)
+    var self = this;
+
+    fetch(`http://localhost:1337/artwork/search/${term}`)
+      .then(response => response.json())
+      .then(function(artworks){
+        self.setState({searchTerm: term, artworks: artworks})
+      })
+      .catch(function(err){
+        console.error('while searching artwork error:', err)
+      })
+  }
+
   render() {
+    console.log(this.state.artworks)
+    const filteredArtworks = this.state.artworks.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS));
+
     if (this.state.loading) {
       return (
         <Wrapper>
@@ -69,7 +91,15 @@ class InformationView extends Component {
     return (
       <Wrapper>
         <div> Please search for the name of a Painting </div>
-        <SearchInput />
+        <SearchInput onChange={this.searchUpdated.bind(this)}/>
+
+        {filteredArtworks.map(artwork => {
+            return (
+              <div className="mail" key={artwork.id}>
+                <div className="from">{artwork.name}</div>
+              </div>
+            )
+          })}
         {this.state.artwork ?
           <div>
             <Header> {this.state.artwork.name} by {this.state.artwork.artist.name} </Header>
