@@ -67,7 +67,7 @@ class App extends Component {
           <Route exact path="/" component={Login} />
           <Route path="/artwork/:id" component={ArtworkView} />
           <Route path="/artist-tag" component={ArtistTagView} />
-          <Route path="/artist" component={ArtistView} />
+          <Route path="/artist/:id" component={ArtistView} />
           <Route path="/tag/:id" component={TagView} />
         </div>
       </Router>
