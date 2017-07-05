@@ -44,8 +44,6 @@ class TagView extends Component {
     super(props);
     this.state =
       { 
-        searchTerm: '',
-        tags: [],
         loading: true,
         artwork: null,
         tagData: null,
