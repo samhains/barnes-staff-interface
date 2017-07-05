@@ -1,54 +1,127 @@
-import React from 'react';
-import SelectField from 'material-ui/SelectField';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
-import MenuItem from 'material-ui/MenuItem';
+import React, { Component } from 'react';
+
 import { Link } from 'react-router-dom';
+import Wrapper from './Wrapper';
+import Header from './Header';
+import pluralize from 'pluralize';
+import HeaderSmall from './HeaderSmall';
+import SubHeader from './SubHeader';
 
-const buttonStyle = {
-  marginTop: '20px',
-  marginLeft: '10px',
-};
+import SearchInput, {createFilter} from 'react-search-input'
 
-const outerContainerStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  flexGrow: '0'
-};
+import ServiceSelect from './ServiceSelect';
+import Loader from './Loader';
+const KEYS_TO_FILTERS = ['name']
 
-const containerStyle = {
+const imageContainer = {
   display: 'flex',
   flexDirection: 'row',
+  flexWrap: 'wrap'
+
+}
+
+const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+const containerStyle = {
+  width: '800px'
 };
 
-const Main = () => (
-  <div style={outerContainerStyle}>
-    <div style={containerStyle}>
-      <SelectField
-        floatingLabelText="Service"
-      >
-        <MenuItem value={1} primaryText="IBM Watson" />
-        <MenuItem value={2} primaryText="Tensorflow" />
-        <MenuItem value={3} primaryText="AWS Rekognition" />
-        <MenuItem value={4} primaryText="Google" />
-        <MenuItem value={5} primaryText="Microsoft Azure" />
-        <MenuItem value={6} primaryText="Clarifai" />
-      </SelectField>
-      <TextField
-        floatingLabelText="Search here..."
-      />
-      <Link to="/about">
-        <RaisedButton
-          style={buttonStyle}
-          label="Submit"
-          primary
-        />
-      </Link>
-    </div>
-    <div>
-      <img src="./cezanne.jpg" alt="" />
-    </div>
-  </div>
-);
+const imageStyle = {
+  maxWidth: '200px',
 
-export default Main;
+} 
+
+const innerContainerStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  flexGrow: '0',
+};
+
+
+class TagView extends Component {
+  constructor(props) {
+    super(props);
+    this.state =
+      { 
+        searchTerm: '',
+        tags: [],
+        loading: true,
+        artwork: null,
+        tagData: null,
+      }
+  }
+
+  componentDidMount() {
+    const id = this.props.match.params.id;
+    const name = this.props.match.params.name;
+    console.log(id)
+    fetch(`http://localhost:1337/artwork/query?artist=${id}&tag=${name}`)
+      .then(response => response.json())
+      .then(response => {
+        console.log(response)
+        this.setState(
+          {
+            tagName: name,
+            artworks: response,
+          })
+      })
+      .then(() => {
+        fetch(`http://localhost:1337/artist/${id}`)
+          .then(response => response.json())
+          .then(response => {
+            console.log('saving artist', response)
+            this.setState(
+              {
+                artist: response,
+                loading: false
+              })
+
+          })
+
+      })
+      .catch(err => console.error(err.message))
+  }
+
+
+  render() {
+    console.log(this.state.artworks)
+
+    if (this.state.loading) {
+      return (
+        <Wrapper>
+          <Loader />
+        </Wrapper>
+      )
+    }
+
+    console.log(this.state.artwork)
+
+    return (
+      <Wrapper>
+        <div style={containerStyle}>
+          <Link to={`/artist/${this.state.artist.id}`}> {`<< ${this.state.artist.name}`} </Link>
+          <Header> {this.state.artist.name}'s {pluralize(capitalizeFirstLetter(this.state.tagName))} </Header>
+          
+            { this.state.artworks.length > 0 ?
+                <div style={imageContainer}>
+                  {this.state.artworks.map((artwork, index) => {
+                  return (
+                  <div key={`${artwork.id}_${index}`}> 
+                    <Link to={`/artwork/${artwork.id}`}>
+                      <img style={imageStyle} src={`http://localhost:1337/images/${artwork.url}`}/> 
+                    </Link>
+                  </div>)
+                  })}
+                </div>
+                :
+                <div> No images were found for this tag! </div>
+          
+            }
+        </div>
+      </Wrapper>
+    );
+  }
+}
+
+export default TagView;
