@@ -110,7 +110,7 @@ class InformationView extends Component {
           })}
         {this.state.artwork ?
           <div>
-            <Header> {this.state.artwork.name} by {this.state.artwork.artist.name} </Header>
+            <Header> {this.state.artwork.name} by <Link to={`/artist/${this.state.artwork.artist.id}`}>{this.state.artwork.artist.name}</Link> </Header>
             <SubHeader> {this.state.artwork.year}</SubHeader>
             <div style={containerStyle}>
               <div style={innerContainerStyle}>
