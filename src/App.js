@@ -9,7 +9,7 @@ import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import AppBar from 'material-ui/AppBar';
 import Login from './Login';
-import InformationView from './InformationView';
+import ArtworkView from './ArtworkView';
 import ArtistView from './ArtistView';
 import ArtistTagView from './ArtistTagView';
 import TagView from './TagView';
@@ -65,10 +65,10 @@ class App extends Component {
             </Drawer>
           </AppBar>
           <Route exact path="/" component={Login} />
-          <Route path="/information/:id" component={InformationView} />
+          <Route path="/artwork/:id" component={ArtworkView} />
           <Route path="/artist-tag" component={ArtistTagView} />
           <Route path="/artist" component={ArtistView} />
-          <Route path="/tag" component={TagView} />
+          <Route path="/tag/:id" component={TagView} />
         </div>
       </Router>
     );

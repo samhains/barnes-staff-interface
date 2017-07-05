@@ -133,7 +133,7 @@ class InformationView extends Component {
                   <TableBody displayRowCheckbox={false}>
                     { this.state.tagData.map((tag, index) => (
                       <TableRow key={`${tag.name}_${index}`}>
-                        <TableRowColumn><Link to="/information">{tag.name}</Link></TableRowColumn>
+                        <TableRowColumn><Link to={`/tag/${tag.name}`}>{tag.name}</Link></TableRowColumn>
                         <TableRowColumn>{tag.confidence}</TableRowColumn>
                       </TableRow>
                       ))}
