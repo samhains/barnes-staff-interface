@@ -53,17 +53,26 @@ class InformationView extends Component {
       window.location.reload(); 
   }
   componentDidMount() {
+    console.log("here")
     const id = this.props.match.params.id;
-    fetch(`http://localhost:1337/artwork/${id}`)
-      .then(response => response.json())
-      .then(response => {
-        this.setState(
-          { artwork: response,
-            loading: false,
-            tagData: response.tags
-          })
-      })
-      .catch(err => console.error(err.message))
+    if (id) {
+      fetch(`http://localhost:1337/artwork/${id}`)
+        .then(response => response.json())
+        .then(response => {
+          this.setState(
+            { artwork: response,
+              loading: false,
+              tagData: response.tags
+            })
+        })
+        .catch(err => {
+          this.setState( { loading: false });
+        })
+
+    } else {
+        console.log('here')
+        this.setState( { loading: false });
+    }
   }
 
   searchUpdated (term) {
@@ -102,7 +111,7 @@ class InformationView extends Component {
         {filteredArtworks.map(artwork => {
             return (
               <div className="mail" key={artwork.id}>
-                <Link to={`${artwork.id}`} onClick={ this.refreshPage }>
+                <Link to={`/artwork/${artwork.id}`} onClick={ this.refreshPage }>
                   <div className="from">{artwork.name}</div>
                 </Link>
               </div>

@@ -114,7 +114,7 @@ class InformationView extends Component {
         {filteredArtists.map(artist => {
             return (
               <div className="mail" key={artist.id}>
-                <Link to={`${artist.id}`} onClick={ this.refreshPage }>
+                <Link to={`/artist/${artist.id}`} onClick={ this.refreshPage }>
                   <div className="from">{artist.name}</div>
                 </Link>
               </div>

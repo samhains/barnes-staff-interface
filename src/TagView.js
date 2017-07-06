@@ -124,7 +124,7 @@ class TagView extends Component {
                   })}
                 </div>
                 :
-                <div> No images were found for this tag! </div>
+                null
           
             }
         </div>

@@ -22,10 +22,9 @@ const linkStyle = {
 };
 
 const menuItems = [
-{ name: 'Information', url: '/information' },
-{ name: 'Artist', url: '/artist' },
-{ name: 'Artist Tag', url: '/artist-tag' },
-{ name: 'Tag', url: '/tag' },
+{ name: 'Artworks', url: '/artwork' },
+{ name: 'Artists', url: '/artist' },
+{ name: 'Tags', url: '/tag' },
 ];
 
 const drawerStyle = {
@@ -65,6 +64,7 @@ class App extends Component {
             </Drawer>
           </AppBar>
           <Route exact path="/" component={Login} />
+          <Route exact path="/artwork" component={ArtworkView} />
           <Route exact path="/artwork/:id" component={ArtworkView} />
           <Route exact path="/artist" component={ArtistView} />
           <Route exact path="/artist/:id" component={ArtistView} />
