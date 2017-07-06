@@ -67,7 +67,6 @@ class InformationView extends Component {
       .then(response => response.json())
       .then(response => {
         console.log(response)
-        
         this.setState(
           { artist: response,
             artworks: response.artworks,
@@ -75,7 +74,9 @@ class InformationView extends Component {
             tagData: this.processTags(response.tags)
           })
       })
-      .catch(err => console.error(err.message))
+      .catch(err => {
+        this.setState( { loading: false });
+      })
   }
 
   searchUpdated (term) {

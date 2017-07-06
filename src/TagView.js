@@ -46,8 +46,6 @@ class TagView extends Component {
         searchTerm: '',
         tags: [],
         loading: true,
-        artwork: null,
-        tagData: null,
       }
   }
   refreshPage(){ 
@@ -66,7 +64,10 @@ class TagView extends Component {
             loading: false
           })
       })
-      .catch(err => console.error(err.message))
+      .catch(err => {
+        this.setState( { loading: false });
+      })
+      
   }
 
   searchUpdated (term) {
@@ -78,13 +79,10 @@ class TagView extends Component {
       .then(function(tags){
         self.setState({searchTerm: term, tags: tags})
       })
-      .catch(function(err){
-        console.error('while searching artwork error:', err)
-      })
+      .catch(err => console.error(err.message))
   }
 
   render() {
-    console.log(this.state.artworks)
     const filteredTags = this.state.tags.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS)).slice(0, 10);
 
     if (this.state.loading) {
@@ -95,19 +93,20 @@ class TagView extends Component {
       )
     }
 
-    console.log(this.state.artwork)
 
     return (
       <Wrapper>
         <div style={containerStyle}>
           <div> Please search for the name of a Tag </div>
           <SearchInput onChange={this.searchUpdated.bind(this)} fuzzy sortResults/>
-          <Header> {capitalizeFirstLetter(this.state.tagName)} </Header>
+          {this.state.tagName ? 
+            <Header> {capitalizeFirstLetter(this.state.tagName)} </Header>
+          : null }
           
           {filteredTags.map(tag => {
               return (
                 <div className="mail" key={tag.id}>
-                  <Link to={`${tag.name}`} onClick={ this.refreshPage }>
+                  <Link to={`/tag/${tag.name}`} onClick={ this.refreshPage }>
                     <div className="from">{tag.name}</div>
                   </Link>
                 </div>

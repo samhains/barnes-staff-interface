@@ -78,7 +78,9 @@ class TagView extends Component {
           })
 
       })
-      .catch(err => console.error(err.message))
+      .catch(err => {
+        this.setState( { loading: false });
+      })
   }
 
 

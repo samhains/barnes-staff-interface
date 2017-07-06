@@ -66,9 +66,11 @@ class App extends Component {
           </AppBar>
           <Route exact path="/" component={Login} />
           <Route exact path="/artwork/:id" component={ArtworkView} />
+          <Route exact path="/artist" component={ArtistView} />
           <Route exact path="/artist/:id" component={ArtistView} />
           <Route exact path="/artist/:id/tag/:name" component={ArtistTagView} />
           <Route exact path="/tag/:id" component={TagView} />
+          <Route exact path="/tag" component={TagView} />
         </div>
       </Router>
     );
